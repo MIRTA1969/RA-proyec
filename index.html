@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi Proyecto de Realidad Aumentada</title>
+
+  <!-- Esta línea carga la herramienta de Google para ver cosas en 3D -->
+  <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.3.0/model-viewer.min.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      background-color: #222;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+    }
+    /* Hace que el visor ocupe toda la pantalla del teléfono */
+    model-viewer {
+      width: 100vw;
+      height: 100vh;
+    }
+    /* Estilo del botón */
+    .boton-ra {
+      position: absolute;
+      bottom: 40px;
+      padding: 16px 28px;
+      font-size: 18px;
+      font-weight: bold;
+      color: white;
+      background-color: #007bff;
+      border: none;
+      border-radius: 50px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- AQUÍ PONEMOS EL OBJETO 3D -->
+  <!-- Nota: Cambia "mi_escena.glb" por el nombre exacto de tu archivo -->
+  <model-viewer 
+    id="visor"
+    src="mi_escena.glb" 
+    ar 
+    ar-modes="webxr scene-viewer quick-look" 
+    camera-controls 
+    autoplay>
+    
+    <button slot="ar-button" class="boton-ra">
+      Ver en mi espacio (Realidad Aumentada)
+    </button>
+  </model-viewer>
+
+  <!-- EL RELOJ DE 20 SEGUNDOS -->
+  <script>
+    const visor = document.getElementById('visor');
+
+    // Cuando el usuario entra al modo cámara (Realidad Aumentada):
+    visor.addEventListener('ar-status', (evento) => {
+      if (evento.detail.status === 'session-started') {
+        
+        // 1. Inicia la animación desde el segundo 0
+        visor.currentTime = 0;
+        visor.play();
+
+        // 2. Cuenta 20 segundos (20,000 milisegundos) y pausa la animación
+        setTimeout(() => {
+          visor.pause();
+          alert("¡La escena de 20 segundos ha terminado!");
+        }, 20000);
+      }
+    });
+  </script>
+
+</body>
+</html>
